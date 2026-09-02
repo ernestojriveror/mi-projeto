@@ -1,14 +1,23 @@
 <?php
-// LOCAL: /restaurante_mvc/public/index.php
 
-// 1. Puxa a conexão (Saindo de public/ para buscar em config/)
-require_once "../config/conexao.php";
+require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../app/Controllers/UsuarioController.php';
 
-// 2. Captura o que foi digitado na URL (ex: 'cardapio' ou 'contato')
-$url = $_GET['url'] ?? 'home';
+$controller = new UsuarioController();
+$acao = $_GET['acao'] ?? 'home';
+$id = $_GET['id'] ?? null;
 
-echo "<h2>Restaurante MVC - Sistema Ativo</h2>";
-echo "Você solicitou a página: <strong>$url</strong>";
-
-// 3. No futuro, aqui o index.php vai chamar os Controllers
-// Por enquanto, apenas confirmamos que a rota está funcionando!
+switch ($acao) {
+    case 'cadastrar':
+        $controller->cadastrar($pdo);
+        break;
+    case 'atualizar':
+        $controller->atualizar($pdo, $id);
+        break;
+    case 'excluir':
+        $controller->excluir($pdo, $id);
+        break;
+    default:
+        $controller->home($pdo, $id);
+        break;
+}
